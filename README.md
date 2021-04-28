@@ -7,7 +7,7 @@
 Data Plotter is an open source app for plotting data from CSV Files. It is licensed under the MIT License.
 
 ## Downloads
-Windows - [Download](https://github.com/K-Balaji/DataPlotter/releases/download/1.0.0/Bala_Plotter_Setup.exe)
+Windows - [Download](https://github.com/K-Balaji/DataPlotter/releases/download/1.0.0/Data_Plotter_Setup.exe)
 
 ## Test Locally (For Windows, MacOS, Linux)
 
