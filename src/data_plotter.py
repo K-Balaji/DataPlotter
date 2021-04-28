@@ -11,7 +11,7 @@ plt.style.use('bmh')
 root = Tk()
 root.configure(background='black')
 root.title("Data Plotter")
-root.iconbitmap("../icon.ico")
+root.iconbitmap("../images/icon.ico")
 root.geometry('1200x650')
 root.minsize(900, 600)
 
