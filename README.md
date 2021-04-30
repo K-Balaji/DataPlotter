@@ -1,10 +1,14 @@
 # Data Plotter
 <div align="center">
-  <img src="./images/icon.ico" alt="Icon" height="128"/>
+  <img src="./images/banner.png" alt="Icon" height="128"/>
 </div>
 
 ## About
 Data Plotter is an open source app for plotting data from CSV Files. It is licensed under the MIT License.
+
+## Screenshots
+
+![Screenshot](./images/Screenshot.png)
 
 ## Downloads
 Windows - [Download](https://github.com/K-Balaji/DataPlotter/releases/download/1.0.0/Data_Plotter_Setup.exe)
