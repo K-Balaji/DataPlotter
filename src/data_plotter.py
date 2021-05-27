@@ -4,12 +4,13 @@ from tkinter.messagebox import showinfo
 
 from matplotlib import pyplot as plt
 from pandas import read_csv
+from os.path import basename
 
 plt.style.use('bmh')
 
 # Main Window
 root = Tk()
-root.configure(background='black')
+root.configure(background='#070091')
 root.title("Data Plotter")
 root.iconbitmap("../images/icon.ico")
 root.geometry('1200x650')
@@ -32,10 +33,12 @@ preview.pack(expand=True, fill=Y)
 preview.place(x=900, y=0)
 
 # Labels
-text1 = Label(root, text="Column Name for X Axis : ", font=('Arial', '16'), bg='black', fg='white')
+text1 = Label(root, text="Column Name for X Axis : ", font=('Arial', '16'), bg='#070091', fg='white')
 text1.place(x=200, y=230)
-text2 = Label(root, text="Column Name for Y Axis : ", font=('Arial', '16'), bg='black', fg='white')
+text2 = Label(root, text="Column Name for Y Axis : ", font=('Arial', '16'), bg='#070091', fg='white')
 text2.place(x=200, y=275)
+text3 = Label(root, text="File :          Not selected", font=('Arial', '16'), bg='#070091', fg='white')
+text3.place(x=390, y=320)
 
 
 def getColumnData():
@@ -75,6 +78,7 @@ def open_file():
                                  "performance issues")
         return
 
+    text3.config(text=f"File :          {basename(file)}")
     preview.delete(1.0, END)
     preview.insert(1.0, csv_file)
 
@@ -82,9 +86,9 @@ def open_file():
 # Buttons
 fileButton = Button(root, text="Open File", relief="groove", activebackground="black", activeforeground="white",
                     font=('Arial', '16'), command=open_file)
-fileButton.place(x=500, y=330)
+fileButton.place(x=500, y=370)
 plotButton = Button(root, text="Plot", relief="groove", activebackground="black", activeforeground="white",
                     font=('Arial', '16'), command=getColumnData)
-plotButton.place(x=600, y=420)
+plotButton.place(x=600, y=470)
 
 root.mainloop()
