@@ -1,7 +1,6 @@
 from tkinter import Tk, Entry, Button, Label, Text, END, Y
 from tkinter.filedialog import askopenfilename
 from tkinter.messagebox import showinfo
-
 from matplotlib import pyplot as plt
 from pandas import read_csv
 from os.path import basename
@@ -20,6 +19,7 @@ root.minsize(900, 600)
 file = ""
 column1 = []
 column2 = []
+csv_file = ""
 
 # Text Fields
 column1Text = Entry(root, font=('Arial', '16'))
