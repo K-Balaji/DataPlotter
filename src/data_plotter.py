@@ -1,4 +1,4 @@
-from tkinter import Tk, Entry, Button, Label, Text, END, Y
+from tkinter import OptionMenu, StringVar, Tk, Entry, Button, Label, Text, END, Y
 from tkinter.filedialog import askopenfilename
 from tkinter.messagebox import showinfo
 from matplotlib import pyplot as plt
@@ -14,6 +14,7 @@ root.title("Data Plotter")
 root.iconbitmap("../images/icon.ico")
 root.geometry('1200x650')
 root.minsize(900, 600)
+root.state('zoomed')
 
 # Files
 file = ""
@@ -39,28 +40,67 @@ text2 = Label(root, text="Column Name for Y Axis : ", font=('Arial', '16'), bg='
 text2.place(x=200, y=275)
 text3 = Label(root, text="File :          Not selected", font=('Arial', '16'), bg='#070091', fg='white')
 text3.place(x=390, y=320)
+text4 = Label(root, text=" Graph : ", font=('Arial', '16'), bg='#070091', fg='white')
+text4.place(x=360, y=190)
+
+# Dropdown Menu
+graph_label = StringVar(root, "Select Graph")
+graphs = OptionMenu(root, graph_label, *["Line Graph", "Bar Graph", "Horizontal Bar Graph"])
+graphs.place(x=500, y=190)
 
 
-def getColumnData():
+def getColumnData() -> bool:
     global column1
     global column2
     try:
         column1 = list(csv_file[str(column1Text.get())])
         column2 = list(csv_file[str(column2Text.get())])
+        return True
     except:
         showinfo("Data Plotter", "One or both columns doesn't exist")
+        return False
+
+def plotGraph():
+    if not getColumnData():
         return
 
-    plt.plot(column1, column2, '.b-')
-    plt.xlim([min(column1), max(column1)])
-    plt.ylim([min(column2), max(column2)])
-    plt.title("Data Plotter")
-    plt.xlabel(str(column1Text.get()).title())
-    plt.ylabel(str(column2Text.get()).title())
-    plt.show()
+    if graph_label.get() == "Select Graph":
+        showinfo("Data Plotter", "Please select type of graph")
+        return
+    elif graph_label.get() == "Line Graph":
+        title = basename(file)
+        title = title.replace(".csv", "")
+
+        plt.plot(column1, column2, '.b-')
+        plt.xlim([min(column1), max(column1)])
+        plt.ylim([min(column2), max(column2)])
+        plt.title(f"Data Plotter - {title}")
+        plt.xlabel(str(column1Text.get()).title())
+        plt.ylabel(str(column2Text.get()).title())
+        plt.show()
+    elif graph_label.get() == "Bar Graph":
+        title = basename(file)
+        title = title.replace(".csv", "")
+
+        plt.bar(column1, column2)
+        plt.title(f"Data Plotter - {title}")
+        plt.xlabel(str(column1Text.get()).title())
+        plt.ylabel(str(column2Text.get()).title())
+        plt.show()
+    elif graph_label.get() == "Horizontal Bar Graph":
+        title = basename(file)
+        title = title.replace(".csv", "")
+
+        plt.barh(column1, column2)
+        plt.title(f"Data Plotter - {title}")
+        plt.xlabel(str(column1Text.get()).title())
+        plt.ylabel(str(column2Text.get()).title())
+        plt.show()
+    else:
+        raise Exception("Graph Value not recognized")
 
 
-def open_file():
+def openFile():
     global file
     global csv_file
     file = askopenfilename(defaultextension='.csv', filetypes=[("CSV Files", "*.csv")])
@@ -73,8 +113,8 @@ def open_file():
             showinfo("Data Plotter", "Error Parsing CSV File")
             return
 
-    if len(csv_file.index) > 2000:
-        showinfo("Data Plotter", "Number of rows greater than 2000. Please reduce the number of rows to avoid "
+    if len(csv_file) > 2500:
+        showinfo("Data Plotter", "Number of rows greater than 2500. Please reduce the number of rows to avoid "
                                  "performance issues")
         return
 
@@ -85,10 +125,10 @@ def open_file():
 
 # Buttons
 fileButton = Button(root, text="Open File", relief="groove", activebackground="black", activeforeground="white",
-                    font=('Arial', '16'), command=open_file)
+                    font=('Arial', '16'), command=openFile)
 fileButton.place(x=500, y=370)
 plotButton = Button(root, text="Plot", relief="groove", activebackground="black", activeforeground="white",
-                    font=('Arial', '16'), command=getColumnData)
+                    font=('Arial', '16'), command=plotGraph)
 plotButton.place(x=600, y=470)
 
 root.mainloop()
