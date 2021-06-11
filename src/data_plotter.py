@@ -61,6 +61,10 @@ def getColumnData() -> bool:
         showinfo("Data Plotter", "One or both columns doesn't exist")
         return False
 
+def graphWindow():
+    plt.get_current_fig_manager().window.wm_iconbitmap("./icon.ico")
+    plt.get_current_fig_manager().set_window_title("Data Plotter - Graph")
+
 def plotGraph():
     if not getColumnData():
         return
@@ -73,6 +77,7 @@ def plotGraph():
         title = basename(file)
         title = title.replace(".csv", "")
 
+        graphWindow()
         plt.plot(column1, column2, '.b-')
         plt.xlim([min(column1), max(column1)])
         plt.ylim([min(column2), max(column2)])
@@ -85,6 +90,7 @@ def plotGraph():
         title = basename(file)
         title = title.replace(".csv", "")
 
+        graphWindow()
         plt.bar(column1, column2)
         plt.title(f"Data Plotter - {title}")
         plt.xlabel(str(column1Text.get()).title())
@@ -95,6 +101,7 @@ def plotGraph():
         title = basename(file)
         title = title.replace(".csv", "")
 
+        graphWindow()
         plt.barh(column1, column2)
         plt.title(f"Data Plotter - {title}")
         plt.xlabel(str(column1Text.get()).title())
