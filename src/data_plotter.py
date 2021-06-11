@@ -11,7 +11,7 @@ plt.style.use('bmh')
 root = Tk()
 root.configure(background='#070091')
 root.title("Data Plotter")
-root.iconbitmap("../images/icon.ico")
+root.iconbitmap("./icon.ico")
 root.geometry('1200x650')
 root.minsize(900, 600)
 root.state('zoomed')
@@ -29,7 +29,7 @@ column2Text = Entry(root, font=('Arial', '16'))
 column2Text.place(x=500, y=275)
 
 # Preview
-preview = Text(root, wrap="none", font=('Arial', '14'), height=864)
+preview = Text(root, wrap="none", font=('Arial', '14'), height=864, background='#8c03fc', foreground='white')
 preview.pack(expand=True, fill=Y)
 preview.place(x=900, y=0)
 
@@ -52,6 +52,7 @@ graphs.place(x=500, y=190)
 def getColumnData() -> bool:
     global column1
     global column2
+
     try:
         column1 = list(csv_file[str(column1Text.get())])
         column2 = list(csv_file[str(column2Text.get())])
@@ -67,6 +68,7 @@ def plotGraph():
     if graph_label.get() == "Select Graph":
         showinfo("Data Plotter", "Please select type of graph")
         return
+    
     elif graph_label.get() == "Line Graph":
         title = basename(file)
         title = title.replace(".csv", "")
@@ -78,6 +80,7 @@ def plotGraph():
         plt.xlabel(str(column1Text.get()).title())
         plt.ylabel(str(column2Text.get()).title())
         plt.show()
+    
     elif graph_label.get() == "Bar Graph":
         title = basename(file)
         title = title.replace(".csv", "")
@@ -87,6 +90,7 @@ def plotGraph():
         plt.xlabel(str(column1Text.get()).title())
         plt.ylabel(str(column2Text.get()).title())
         plt.show()
+    
     elif graph_label.get() == "Horizontal Bar Graph":
         title = basename(file)
         title = title.replace(".csv", "")
@@ -96,6 +100,7 @@ def plotGraph():
         plt.xlabel(str(column1Text.get()).title())
         plt.ylabel(str(column2Text.get()).title())
         plt.show()
+    
     else:
         raise Exception("Graph Value not recognized")
 
@@ -103,6 +108,7 @@ def plotGraph():
 def openFile():
     global file
     global csv_file
+    
     file = askopenfilename(defaultextension='.csv', filetypes=[("CSV Files", "*.csv")])
     if file == "":
         return
