@@ -22,6 +22,7 @@ Windows - [Download](https://github.com/K-Balaji/DataPlotter/releases/download/2
 4. Open your terminal and navigate to that directory.
 5. Enter the following in the terminal - 
 ```
+pip install -r requirements.txt
 cd src
 python data_plotter.py
 ```
