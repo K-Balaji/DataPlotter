@@ -45,7 +45,7 @@ text4.place(x=360, y=190)
 
 # Dropdown Menu
 graph_label = StringVar(root, "Select Graph")
-graphs = OptionMenu(root, graph_label, *["Line Graph", "Bar Graph", "Horizontal Bar Graph"])
+graphs = OptionMenu(root, graph_label, *["Line Graph", "Bar Graph", "Horizontal Bar Graph", "Pie Chart"])
 graphs.place(x=500, y=190)
 
 
@@ -108,6 +108,15 @@ def plotGraph():
         plt.ylabel(str(column2Text.get()).title())
         plt.show()
     
+    elif graph_label.get() == "Pie Chart":
+        title = basename(file)
+        title = title.replace(".csv", "")
+
+        graphWindow()
+        plt.pie(column2, labels=column1, wedgeprops={'edgecolor': "black"})
+        plt.title(f"Data Plotter - {title}")
+        plt.show()
+
     else:
         raise Exception("Graph Value not recognized")
 
