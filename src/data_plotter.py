@@ -144,6 +144,9 @@ def openFile():
     preview.delete(1.0, END)
     preview.insert(1.0, csv_file)
 
+def changeTheme():
+    changeTheme = 0 # Change Theme
+
 
 # Buttons
 fileButton = Button(root, text="Open File", relief="groove", activebackground="black", activeforeground="white",
@@ -152,5 +155,7 @@ fileButton.place(x=500, y=370)
 plotButton = Button(root, text="Plot", relief="groove", activebackground="black", activeforeground="white",
                     font=('Arial', '16'), command=plotGraph)
 plotButton.place(x=600, y=470)
+themeButton = Button(root, text="Change Theme", relief="groove", activebackground="black", activeforeground="white", font=('Arial', '12'), command=changeTheme)
+themeButton.place(x=730, y=25)
 
 root.mainloop()
