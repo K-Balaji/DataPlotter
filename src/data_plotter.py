@@ -45,7 +45,7 @@ text4.place(x=360, y=190)
 
 # Dropdown Menu
 graph_label = StringVar(root, "Select Graph")
-graphs = OptionMenu(root, graph_label, *["Line Graph", "Bar Graph", "Horizontal Bar Graph", "Pie Chart"])
+graphs = OptionMenu(root, graph_label, *["Line Graph", "Bar Graph", "Horizontal Bar Graph", "Pie Chart", "Scatter Plot"])
 graphs.place(x=500, y=190)
 
 
@@ -116,6 +116,17 @@ def plotGraph():
         plt.pie(column2, labels=column1, wedgeprops={'edgecolor': "black"})
         plt.title(f"Data Plotter - {title}")
         plt.show()
+    
+    elif graph_label.get() == "Scatter Plot":
+        title = basename(file)
+        title = title.replace(".csv", "")
+
+        graphWindow()
+        plt.scatter(column1, column2)
+        plt.title(f"Data Plotter - {title}")
+        plt.xlabel(str(column1Text.get()).title())
+        plt.ylabel(str(column2Text.get()).title())
+        plt.show()
 
     else:
         raise Exception("Graph Value not recognized")
@@ -144,9 +155,6 @@ def openFile():
     preview.delete(1.0, END)
     preview.insert(1.0, csv_file)
 
-def changeTheme():
-    changeTheme = 0 # Change Theme
-
 
 # Buttons
 fileButton = Button(root, text="Open File", relief="groove", activebackground="black", activeforeground="white",
@@ -155,7 +163,5 @@ fileButton.place(x=500, y=370)
 plotButton = Button(root, text="Plot", relief="groove", activebackground="black", activeforeground="white",
                     font=('Arial', '16'), command=plotGraph)
 plotButton.place(x=600, y=470)
-themeButton = Button(root, text="Change Theme", relief="groove", activebackground="black", activeforeground="white", font=('Arial', '12'), command=changeTheme)
-themeButton.place(x=730, y=25)
 
 root.mainloop()
