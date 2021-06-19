@@ -53,9 +53,6 @@ graphs = OptionMenu(root, theme_label, *[style for style in plt.style.available]
 graphs.place(x=720, y=10)
 
 def getColumnData() -> bool:
-    global column1
-    global column2
-
     try:
         column1 = list(csv_file[str(column1Text.get())])
         column2 = list(csv_file[str(column2Text.get())])
@@ -141,9 +138,6 @@ def plotGraph():
 
 
 def openFile():
-    global file
-    global csv_file
-    
     file = askopenfilename(defaultextension='.csv', filetypes=[("CSV Files", "*.csv")])
     if file == "":
         return
