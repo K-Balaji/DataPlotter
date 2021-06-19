@@ -48,6 +48,9 @@ graph_label = StringVar(root, "Select Graph")
 graphs = OptionMenu(root, graph_label, *["Line Graph", "Bar Graph", "Horizontal Bar Graph", "Pie Chart", "Scatter Plot"])
 graphs.place(x=500, y=190)
 
+theme_label = StringVar(root, "Graph Theme")
+graphs = OptionMenu(root, theme_label, *[style for style in plt.style.available])
+graphs.place(x=720, y=10)
 
 def getColumnData() -> bool:
     global column1
@@ -62,8 +65,13 @@ def getColumnData() -> bool:
         return False
 
 def graphWindow():
+    title = basename(file).replace(".csv", "")
     plt.get_current_fig_manager().window.wm_iconbitmap("./icon.ico")
-    plt.get_current_fig_manager().set_window_title("Data Plotter - Graph")
+    plt.get_current_fig_manager().set_window_title(f"Data Plotter Graph - {title}")
+    if theme_label.get() == "Graph Theme":
+        plt.style.use('bmh')
+    else:
+        plt.style.use(theme_label.get())
 
 def plotGraph():
     if not getColumnData():
@@ -78,7 +86,7 @@ def plotGraph():
         title = title.replace(".csv", "")
 
         graphWindow()
-        plt.plot(column1, column2, '.b-')
+        plt.plot(column1, column2)
         plt.xlim([min(column1), max(column1)])
         plt.ylim([min(column2), max(column2)])
         plt.title(f"Data Plotter - {title}")
