@@ -2,6 +2,7 @@ from tkinter import OptionMenu, StringVar, Tk, Entry, Button, Label, Text, END, 
 from tkinter.filedialog import askopenfilename
 from tkinter.messagebox import showinfo
 from matplotlib import pyplot as plt
+import numpy as np
 from pandas import read_csv
 from os.path import basename
 
@@ -34,10 +35,10 @@ preview.pack(expand=True, fill=Y)
 preview.place(x=900, y=0)
 
 # Labels
-text1 = Label(root, text="Column Name for X Axis : ", font=('Arial', '16'), bg='#070091', fg='white')
-text1.place(x=200, y=230)
-text2 = Label(root, text="Column Name for Y Axis : ", font=('Arial', '16'), bg='#070091', fg='white')
-text2.place(x=200, y=275)
+text1 = Label(root, text="Column Name for X Axis/Primary : ", font=('Arial', '16'), bg='#070091', fg='white')
+text1.place(x=120, y=230)
+text2 = Label(root, text="Column Name for Y Axis/Secondary : ", font=('Arial', '16'), bg='#070091', fg='white')
+text2.place(x=90, y=275)
 text3 = Label(root, text="File :          Not selected", font=('Arial', '16'), bg='#070091', fg='white')
 text3.place(x=390, y=320)
 text4 = Label(root, text=" Graph : ", font=('Arial', '16'), bg='#070091', fg='white')
@@ -45,7 +46,7 @@ text4.place(x=360, y=190)
 
 # Dropdown Menu
 graph_label = StringVar(root, "Select Graph")
-graphs = OptionMenu(root, graph_label, *["Line Graph", "Bar Graph", "Horizontal Bar Graph", "Pie Chart", "Scatter Plot"])
+graphs = OptionMenu(root, graph_label, *["Line Graph", "Bar Graph", "Horizontal Bar Graph", "Pie Chart", "Scatter Plot", "Area Chart"])
 graphs.place(x=500, y=190)
 
 theme_label = StringVar(root, "Graph Theme")
@@ -53,6 +54,9 @@ graphs = OptionMenu(root, theme_label, *[style for style in plt.style.available]
 graphs.place(x=720, y=10)
 
 def getColumnData() -> bool:
+    global column1
+    global column2
+
     try:
         column1 = list(csv_file[str(column1Text.get())])
         column2 = list(csv_file[str(column2Text.get())])
@@ -77,7 +81,7 @@ def plotGraph():
     if graph_label.get() == "Select Graph":
         showinfo("Data Plotter", "Please select type of graph")
         return
-    
+
     elif graph_label.get() == "Line Graph":
         title = basename(file)
         title = title.replace(".csv", "")
@@ -90,7 +94,7 @@ def plotGraph():
         plt.xlabel(str(column1Text.get()).title())
         plt.ylabel(str(column2Text.get()).title())
         plt.show()
-    
+
     elif graph_label.get() == "Bar Graph":
         title = basename(file)
         title = title.replace(".csv", "")
@@ -101,24 +105,24 @@ def plotGraph():
         plt.xlabel(str(column1Text.get()).title())
         plt.ylabel(str(column2Text.get()).title())
         plt.show()
-    
+
     elif graph_label.get() == "Horizontal Bar Graph":
         title = basename(file)
         title = title.replace(".csv", "")
 
         graphWindow()
-        plt.barh(column1, column2)
+        plt.barh(column2, column1)
         plt.title(f"Data Plotter - {title}")
         plt.xlabel(str(column1Text.get()).title())
         plt.ylabel(str(column2Text.get()).title())
         plt.show()
-    
+
     elif graph_label.get() == "Pie Chart":
         title = basename(file)
         title = title.replace(".csv", "")
 
         graphWindow()
-        plt.pie(column2, labels=column1, wedgeprops={'edgecolor': "black"})
+        plt.pie(column1, labels=column2)
         plt.title(f"Data Plotter - {title}")
         plt.show()
     
@@ -133,11 +137,25 @@ def plotGraph():
         plt.ylabel(str(column2Text.get()).title())
         plt.show()
 
+    elif graph_label.get() == "Area Chart":
+        title = basename(file)
+        title = title.replace(".csv", "")
+
+        graphWindow()
+        plt.stackplot(column1, column2)
+        plt.title(f"Data Plotter - {title}")
+        plt.xlabel(str(column1Text.get()).title())
+        plt.ylabel(str(column2Text.get()).title())
+        plt.show()
+
     else:
         raise Exception("Graph Value not recognized")
 
 
 def openFile():
+    global file
+    global csv_file
+
     file = askopenfilename(defaultextension='.csv', filetypes=[("CSV Files", "*.csv")])
     if file == "":
         return
