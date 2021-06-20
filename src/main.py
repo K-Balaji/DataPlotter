@@ -35,10 +35,10 @@ preview.pack(expand=True, fill=Y)
 preview.place(x=900, y=0)
 
 # Labels
-text1 = Label(root, text="Column Name for X Axis/Primary : ", font=('Arial', '16'), bg='#070091', fg='white')
-text1.place(x=120, y=230)
-text2 = Label(root, text="Column Name for Y Axis/Secondary : ", font=('Arial', '16'), bg='#070091', fg='white')
-text2.place(x=90, y=275)
+text1 = Label(root, text="Column Name for X Axis/Primary Value : ", font=('Arial', '16'), bg='#070091', fg='white')
+text1.place(x=60, y=230)
+text2 = Label(root, text="Column Name for Y Axis/Secondary Value : ", font=('Arial', '16'), bg='#070091', fg='white')
+text2.place(x=30, y=275)
 text3 = Label(root, text="File :          Not selected", font=('Arial', '16'), bg='#070091', fg='white')
 text3.place(x=390, y=320)
 text4 = Label(root, text=" Graph : ", font=('Arial', '16'), bg='#070091', fg='white')
@@ -68,7 +68,7 @@ def getColumnData() -> bool:
 def graphWindow():
     title = basename(file).replace(".csv", "")
     plt.get_current_fig_manager().window.wm_iconbitmap("./icon.ico")
-    plt.get_current_fig_manager().set_window_title(f"Data Plotter Graph - {title}")
+    plt.get_current_fig_manager().set_window_title(f"Data Plotter {graph_label.get()} - {title}")
     if theme_label.get() == "Graph Theme":
         plt.style.use('bmh')
     else:
@@ -90,7 +90,7 @@ def plotGraph():
         plt.plot(column1, column2)
         plt.xlim([min(column1), max(column1)])
         plt.ylim([min(column2), max(column2)])
-        plt.title(f"Data Plotter - {title}")
+        plt.title(f"Line Graph - {title}")
         plt.xlabel(str(column1Text.get()).title())
         plt.ylabel(str(column2Text.get()).title())
         plt.show()
@@ -101,7 +101,7 @@ def plotGraph():
 
         graphWindow()
         plt.bar(column1, column2)
-        plt.title(f"Data Plotter - {title}")
+        plt.title(f"Bar Graph - {title}")
         plt.xlabel(str(column1Text.get()).title())
         plt.ylabel(str(column2Text.get()).title())
         plt.show()
@@ -112,7 +112,7 @@ def plotGraph():
 
         graphWindow()
         plt.barh(column2, column1)
-        plt.title(f"Data Plotter - {title}")
+        plt.title(f"Horizontal Bar Graph - {title}")
         plt.xlabel(str(column1Text.get()).title())
         plt.ylabel(str(column2Text.get()).title())
         plt.show()
@@ -123,7 +123,7 @@ def plotGraph():
 
         graphWindow()
         plt.pie(column1, labels=column2)
-        plt.title(f"Data Plotter - {title}")
+        plt.title(f"Pie Chart - {title}")
         plt.show()
     
     elif graph_label.get() == "Scatter Plot":
@@ -132,7 +132,7 @@ def plotGraph():
 
         graphWindow()
         plt.scatter(column1, column2)
-        plt.title(f"Data Plotter - {title}")
+        plt.title(f"Scatter Plot - {title}")
         plt.xlabel(str(column1Text.get()).title())
         plt.ylabel(str(column2Text.get()).title())
         plt.show()
@@ -143,7 +143,7 @@ def plotGraph():
 
         graphWindow()
         plt.stackplot(column1, column2)
-        plt.title(f"Data Plotter - {title}")
+        plt.title(f"Area Chart - {title}")
         plt.xlabel(str(column1Text.get()).title())
         plt.ylabel(str(column2Text.get()).title())
         plt.show()
