@@ -12,7 +12,7 @@ Data Plotter is an open source app for plotting data from CSV Files. It is licen
 ![Screenshot 2](./images/Screenshot_2.png)
 
 ## Downloads
-Windows - [Download](https://github.com/K-Balaji/DataPlotter/releases/download/2.0.0/Data_Plotter_Setup.exe)
+Windows 64-bit and 32-bit - [Download](https://github.com/K-Balaji/DataPlotter/releases/download/3.0.0/Data_Plotter_Setup.exe)
 
 ## Test Locally (For Windows, MacOS, Linux)
 
@@ -34,7 +34,6 @@ python data_plotter.py
 - <a href="https://pandas.pydata.org/" target="_blank">Pandas</a>
 
 ## Future Plans
-- More types of graphs
 - Multiple plots on the same graph
 
 ## Contributing
