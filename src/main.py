@@ -2,7 +2,6 @@ from tkinter import OptionMenu, StringVar, Tk, Entry, Button, Label, Text, END, 
 from tkinter.filedialog import askopenfilename
 from tkinter.messagebox import showinfo
 from matplotlib import pyplot as plt
-import numpy as np
 from pandas import read_csv
 from os.path import basename
 
