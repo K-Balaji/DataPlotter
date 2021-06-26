@@ -82,8 +82,7 @@ def plotGraph():
         return
 
     elif graph_label.get() == "Line Graph":
-        title = basename(file)
-        title = title.replace(".csv", "")
+        title = basename(file).replace(".csv", "")
 
         graphWindow()
         plt.plot(column1, column2)
@@ -95,8 +94,7 @@ def plotGraph():
         plt.show()
 
     elif graph_label.get() == "Bar Graph":
-        title = basename(file)
-        title = title.replace(".csv", "")
+        title = basename(file).replace(".csv", "")
 
         graphWindow()
         plt.bar(column1, column2)
@@ -106,8 +104,7 @@ def plotGraph():
         plt.show()
 
     elif graph_label.get() == "Horizontal Bar Graph":
-        title = basename(file)
-        title = title.replace(".csv", "")
+        title = basename(file).replace(".csv", "")
 
         graphWindow()
         plt.barh(column2, column1)
@@ -117,8 +114,7 @@ def plotGraph():
         plt.show()
 
     elif graph_label.get() == "Pie Chart":
-        title = basename(file)
-        title = title.replace(".csv", "")
+        title = basename(file).replace(".csv", "")
 
         graphWindow()
         plt.pie(column1, labels=column2)
@@ -126,8 +122,7 @@ def plotGraph():
         plt.show()
     
     elif graph_label.get() == "Scatter Plot":
-        title = basename(file)
-        title = title.replace(".csv", "")
+        title = basename(file).replace(".csv", "")
 
         graphWindow()
         plt.scatter(column1, column2)
@@ -137,8 +132,7 @@ def plotGraph():
         plt.show()
 
     elif graph_label.get() == "Area Chart":
-        title = basename(file)
-        title = title.replace(".csv", "")
+        title = basename(file).replace(".csv", "")
 
         graphWindow()
         plt.stackplot(column1, column2)
@@ -155,7 +149,7 @@ def openFile():
     global file
     global csv_file
 
-    file = askopenfilename(defaultextension='.csv', filetypes=[("CSV Files", "*.csv")])
+    file = askopenfilename(filetypes=[("CSV Files", "*.csv")])
     if file == "":
         return
     else:
