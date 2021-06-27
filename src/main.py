@@ -2,7 +2,7 @@ from tkinter import OptionMenu, StringVar, Tk, Entry, Button, Label, Text, END, 
 from tkinter.filedialog import askopenfilename
 from tkinter.messagebox import showinfo
 from matplotlib import pyplot as plt
-from pandas import read_csv
+from pandas import read_csv, read_excel
 from os.path import basename
 
 plt.style.use('bmh')
@@ -20,7 +20,7 @@ root.state('zoomed')
 file = ""
 column1 = []
 column2 = []
-csv_file = ""
+data_file = ""
 
 # Text Fields
 column1Text = Entry(root, font=('Arial', '16'))
@@ -57,8 +57,8 @@ def getColumnData() -> bool:
     global column2
 
     try:
-        column1 = list(csv_file[str(column1Text.get())])
-        column2 = list(csv_file[str(column2Text.get())])
+        column1 = list(data_file[str(column1Text.get())])
+        column2 = list(data_file[str(column2Text.get())])
         return True
     except:
         showinfo("Data Plotter", "One or both columns doesn't exist")
@@ -147,26 +147,32 @@ def plotGraph():
 
 def openFile():
     global file
-    global csv_file
+    global data_file
 
-    file = askopenfilename(filetypes=[("CSV Files", "*.csv")])
+    file = askopenfilename(filetypes=[("CSV Files", "*.csv"), ("Excel Sheets", "*.xlsx")])
     if file == "":
         return
     else:
         try:
-            csv_file = read_csv(file)
+            if file.endswith(".csv"):
+                data_file = read_csv(file)
+            elif file.endswith(".xlsx"):
+                data_file = read_excel(file)
+            else:
+                showinfo("Data Plotter", "Improper File Extension")
+
         except:
-            showinfo("Data Plotter", "Error Parsing CSV File")
+            showinfo("Data Plotter", "Error Parsing File")
             return
 
-    if len(csv_file) > 2500:
+    if len(data_file) > 2500:
         showinfo("Data Plotter", "Number of rows greater than 2500. Please reduce the number of rows to avoid "
                                  "performance issues")
         return
 
     text3.config(text=f"File :          {basename(file)}")
     preview.delete(1.0, END)
-    preview.insert(1.0, csv_file)
+    preview.insert(1.0, data_file)
 
 
 # Buttons
