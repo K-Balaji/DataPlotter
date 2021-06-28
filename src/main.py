@@ -16,11 +16,12 @@ root.geometry('1200x650')
 root.minsize(900, 600)
 root.state('zoomed')
 
-# Files
+# Files/Data
 file = ""
 column1 = []
 column2 = []
 data_file = ""
+basename_title = ""
 
 # Text Fields
 column1Text = Entry(root, font=('Arial', '16'))
@@ -41,12 +42,12 @@ text2.place(x=30, y=275)
 text3 = Label(root, text="File :          Not selected", font=('Arial', '16'), bg='#070091', fg='white')
 text3.place(x=390, y=320)
 text4 = Label(root, text=" Graph : ", font=('Arial', '16'), bg='#070091', fg='white')
-text4.place(x=360, y=190)
+text4.place(x=360, y=185)
 
 # Dropdown Menu
 graph_label = StringVar(root, "Select Graph")
 graphs = OptionMenu(root, graph_label, *["Line Graph", "Bar Graph", "Horizontal Bar Graph", "Pie Chart", "Scatter Plot", "Area Chart"])
-graphs.place(x=500, y=190)
+graphs.place(x=500, y=185)
 
 theme_label = StringVar(root, "Graph Theme")
 graphs = OptionMenu(root, theme_label, *[style for style in plt.style.available])
@@ -65,9 +66,8 @@ def getColumnData() -> bool:
         return False
 
 def graphWindow():
-    title = basename(file).replace(".csv", "")
     plt.get_current_fig_manager().window.wm_iconbitmap("./icon.ico")
-    plt.get_current_fig_manager().set_window_title(f"Data Plotter {graph_label.get()} - {title}")
+    plt.get_current_fig_manager().set_window_title(f"Data Plotter {graph_label.get()} - {basename_title}")
     if theme_label.get() == "Graph Theme":
         plt.style.use('bmh')
     else:
@@ -82,61 +82,49 @@ def plotGraph():
         return
 
     elif graph_label.get() == "Line Graph":
-        title = basename(file).replace(".csv", "")
-
         graphWindow()
         plt.plot(column1, column2)
         plt.xlim([min(column1), max(column1)])
         plt.ylim([min(column2), max(column2)])
-        plt.title(f"Line Graph - {title}")
+        plt.title(f"Line Graph - {basename_title}")
         plt.xlabel(str(column1Text.get()).title())
         plt.ylabel(str(column2Text.get()).title())
         plt.show()
 
     elif graph_label.get() == "Bar Graph":
-        title = basename(file).replace(".csv", "")
-
         graphWindow()
         plt.bar(column1, column2)
-        plt.title(f"Bar Graph - {title}")
+        plt.title(f"Bar Graph - {basename_title}")
         plt.xlabel(str(column1Text.get()).title())
         plt.ylabel(str(column2Text.get()).title())
         plt.show()
 
     elif graph_label.get() == "Horizontal Bar Graph":
-        title = basename(file).replace(".csv", "")
-
         graphWindow()
         plt.barh(column2, column1)
-        plt.title(f"Horizontal Bar Graph - {title}")
+        plt.title(f"Horizontal Bar Graph - {basename_title}")
         plt.xlabel(str(column1Text.get()).title())
         plt.ylabel(str(column2Text.get()).title())
         plt.show()
 
     elif graph_label.get() == "Pie Chart":
-        title = basename(file).replace(".csv", "")
-
         graphWindow()
         plt.pie(column1, labels=column2)
-        plt.title(f"Pie Chart - {title}")
+        plt.title(f"Pie Chart - {basename_title}")
         plt.show()
     
     elif graph_label.get() == "Scatter Plot":
-        title = basename(file).replace(".csv", "")
-
         graphWindow()
         plt.scatter(column1, column2)
-        plt.title(f"Scatter Plot - {title}")
+        plt.title(f"Scatter Plot - {basename_title}")
         plt.xlabel(str(column1Text.get()).title())
         plt.ylabel(str(column2Text.get()).title())
         plt.show()
 
     elif graph_label.get() == "Area Chart":
-        title = basename(file).replace(".csv", "")
-
         graphWindow()
         plt.stackplot(column1, column2)
-        plt.title(f"Area Chart - {title}")
+        plt.title(f"Area Chart - {basename_title}")
         plt.xlabel(str(column1Text.get()).title())
         plt.ylabel(str(column2Text.get()).title())
         plt.show()
@@ -148,6 +136,7 @@ def plotGraph():
 def openFile():
     global file
     global data_file
+    global basename_title
 
     file = askopenfilename(filetypes=[("CSV Files", "*.csv"), ("Excel Sheets", "*.xlsx")])
     if file == "":
@@ -173,6 +162,7 @@ def openFile():
     text3.config(text=f"File :          {basename(file)}")
     preview.delete(1.0, END)
     preview.insert(1.0, data_file)
+    basename_title = basename(file).replace(".csv", "").replace(".xlsx", "")
 
 
 # Buttons
