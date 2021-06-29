@@ -12,8 +12,7 @@ root = Tk()
 root.configure(background='#070091')
 root.title("Data Plotter")
 root.iconbitmap("./icon.ico")
-root.geometry('1200x650')
-root.minsize(900, 600)
+root.minsize(900, 550)
 root.state('zoomed')
 
 # Files/Data
@@ -25,9 +24,11 @@ basename_title = ""
 
 # Text Fields
 column1Text = Entry(root, font=('Arial', '16'))
-column1Text.place(x=500, y=230)
+column1Text.place(x=550, y=280)
 column2Text = Entry(root, font=('Arial', '16'))
-column2Text.place(x=500, y=275)
+column2Text.place(x=550, y=325)
+labelText = Entry(root, font=("Arial", "16"))
+labelText.place(x=550, y=235)
 
 # Preview
 preview = Text(root, wrap="none", font=('Arial', '14'), height=864, background='#8c03fc', foreground='white')
@@ -36,18 +37,20 @@ preview.place(x=900, y=0)
 
 # Labels
 text1 = Label(root, text="Column Name for X Axis/Primary Value : ", font=('Arial', '16'), bg='#070091', fg='white')
-text1.place(x=60, y=230)
+text1.place(x=110, y=280)
 text2 = Label(root, text="Column Name for Y Axis/Secondary Value : ", font=('Arial', '16'), bg='#070091', fg='white')
-text2.place(x=30, y=275)
-text3 = Label(root, text="File :          Not selected", font=('Arial', '16'), bg='#070091', fg='white')
-text3.place(x=390, y=320)
+text2.place(x=80, y=325)
+text3 = Label(root, text="File :           Not selected", font=('Arial', '16'), bg='#070091', fg='white')
+text3.place(x=435, y=370)
 text4 = Label(root, text=" Graph : ", font=('Arial', '16'), bg='#070091', fg='white')
-text4.place(x=360, y=185)
+text4.place(x=410, y=140)
+text5 = Label(root, text="Label : ", font=('Arial', '16'), bg='#070091', fg='white')
+text5.place(x=420, y=235)
 
 # Dropdown Menu
 graph_label = StringVar(root, "Select Graph")
 graphs = OptionMenu(root, graph_label, *["Line Graph", "Bar Graph", "Horizontal Bar Graph", "Pie Chart", "Scatter Plot", "Area Chart"])
-graphs.place(x=500, y=185)
+graphs.place(x=550, y=140)
 
 theme_label = StringVar(root, "Graph Theme")
 graphs = OptionMenu(root, theme_label, *[style for style in plt.style.available])
@@ -83,20 +86,22 @@ def plotGraph():
 
     elif graph_label.get() == "Line Graph":
         graphWindow()
-        plt.plot(column1, column2)
+        plt.plot(column1, column2, label=labelText.get())
         plt.xlim([min(column1), max(column1)])
         plt.ylim([min(column2), max(column2)])
         plt.title(f"Line Graph - {basename_title}")
         plt.xlabel(str(column1Text.get()).title())
         plt.ylabel(str(column2Text.get()).title())
+        plt.legend()
         plt.show()
 
     elif graph_label.get() == "Bar Graph":
         graphWindow()
-        plt.bar(column1, column2)
+        plt.bar(column1, column2, label=labelText.get())
         plt.title(f"Bar Graph - {basename_title}")
         plt.xlabel(str(column1Text.get()).title())
         plt.ylabel(str(column2Text.get()).title())
+        plt.legend()
         plt.show()
 
     elif graph_label.get() == "Horizontal Bar Graph":
@@ -115,18 +120,20 @@ def plotGraph():
     
     elif graph_label.get() == "Scatter Plot":
         graphWindow()
-        plt.scatter(column1, column2)
+        plt.scatter(column1, column2, label=labelText.get())
         plt.title(f"Scatter Plot - {basename_title}")
         plt.xlabel(str(column1Text.get()).title())
         plt.ylabel(str(column2Text.get()).title())
+        plt.legend()
         plt.show()
 
     elif graph_label.get() == "Area Chart":
         graphWindow()
-        plt.stackplot(column1, column2)
+        plt.stackplot(column1, column2, labels=[labelText.get()])
         plt.title(f"Area Chart - {basename_title}")
         plt.xlabel(str(column1Text.get()).title())
         plt.ylabel(str(column2Text.get()).title())
+        plt.legend(loc='upper left')
         plt.show()
 
     else:
@@ -168,9 +175,9 @@ def openFile():
 # Buttons
 fileButton = Button(root, text="Open File", relief="groove", activebackground="black", activeforeground="white",
                     font=('Arial', '16'), command=openFile)
-fileButton.place(x=500, y=370)
+fileButton.place(x=550, y=420)
 plotButton = Button(root, text="Plot", relief="groove", activebackground="black", activeforeground="white",
                     font=('Arial', '16'), command=plotGraph)
-plotButton.place(x=600, y=470)
+plotButton.place(x=500, y=520)
 
 root.mainloop()
