@@ -5,8 +5,6 @@ from matplotlib import pyplot as plt
 from pandas import read_csv, read_excel
 from os.path import basename
 
-plt.style.use('bmh')
-
 # Main Window
 root = Tk()
 root.configure(background='#070091')
@@ -21,6 +19,32 @@ column1 = []
 column2 = []
 data_file = ""
 basename_title = ""
+dataset = []
+
+class DataPoint:
+    def __init__(self):
+        self.label = ""
+        self.column1 = ""
+        self.column2 = ""
+        self.data_file = ""
+        self.basename_title = ""
+    
+    def setFile(self, file: str):
+        self.data_file = file
+        self.basename_title = file.replace(".csv", "").replace(".xlsx", "")
+    
+    def setCol1(self, col1: str):
+        self.column1 = col1
+    
+    def setCol2(self, col2: str):
+        self.column2 = col2
+    
+    def setLabel(self, label: str):
+        self.label = label
+
+class Graph:
+    def __init__(self):
+        '''Takes in array of data points to create a graph'''
 
 # Text Fields
 column1Text = Entry(root, font=('Arial', '16'))
