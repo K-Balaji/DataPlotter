@@ -22,12 +22,12 @@ basename_title = ""
 dataset = []
 
 class DataPoint:
-    def __init__(self):
-        self.label = ""
-        self.column1 = ""
-        self.column2 = ""
-        self.data_file = ""
-        self.basename_title = ""
+    def __init__(self, label: str = "", column1: str = "", column2: str = "", data_file: str = "", basename_title: str = data_file.replace(".csv", "").replace(".xlsx", "")):
+        self.label = label
+        self.column1 = column1
+        self.column2 = column2
+        self.data_file = data_file
+        self.basename_title = basename_title
     
     def setFile(self, file: str):
         self.data_file = file
@@ -42,9 +42,8 @@ class DataPoint:
     def setLabel(self, label: str):
         self.label = label
 
-class Graph:
-    def __init__(self):
-        '''Takes in array of data points to create a graph'''
+def createGraph():
+    '''Plot all datapoints'''
 
 # Text Fields
 column1Text = Entry(root, font=('Arial', '16'))
@@ -104,6 +103,10 @@ def plotGraph():
     if not getColumnData():
         return
 
+    createGraph()
+    plt.show()
+
+    '''
     if graph_label.get() == "Select Graph":
         showinfo("Data Plotter", "Please select type of graph")
         return
@@ -162,6 +165,7 @@ def plotGraph():
 
     else:
         raise Exception("Graph Value not recognized")
+    '''
 
 
 def openFile():
