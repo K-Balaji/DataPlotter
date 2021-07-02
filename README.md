@@ -17,8 +17,8 @@ Windows 64-bit and 32-bit - [Download](https://github.com/K-Balaji/DataPlotter/r
 ## Test Locally (For Windows, MacOS, Linux)
 
 1. Install <a href="https://www.python.org/" target="_blank">Python</a>.
-2. Download the above repository as a ZIP File.
-3. Extract the ZIP File to a directory of your choice.
+2. Download this [ZIP Folder](https://github.com/K-Balaji/DataPlotter/archive/refs/tags/3.0.0.zip) or this [tar.gz File](https://github.com/K-Balaji/DataPlotter/archive/refs/tags/3.0.0.tar.gz).
+3. Extract it to a directory of your choice.
 4. Open your terminal and navigate to that directory.
 5. Enter the following in the terminal - 
 ```
