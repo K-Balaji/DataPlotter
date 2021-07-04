@@ -13,14 +13,6 @@ root.iconbitmap("./icon.ico")
 root.minsize(900, 550)
 root.state('zoomed')
 
-# Files/Data
-file = ""
-column1 = []
-column2 = []
-data_file = ""
-basename_title = ""
-dataset = []
-
 class DataPoint:
     def __init__(self, label: str = "", column1: str = "", column2: str = "", data_file: str = "", basename_title: str = data_file.replace(".csv", "").replace(".xlsx", "")):
         self.label = label
@@ -42,8 +34,13 @@ class DataPoint:
     def setLabel(self, label: str):
         self.label = label
 
-def createGraph():
-    '''Plot all datapoints'''
+# Files/Data
+file = ""
+column1 = []
+column2 = []
+data_file = ""
+basename_title = ""
+dataset: list[DataPoint] = []
 
 # Text Fields
 column1Text = Entry(root, font=('Arial', '16'))
@@ -78,6 +75,57 @@ graphs.place(x=550, y=140)
 theme_label = StringVar(root, "Graph Theme")
 graphs = OptionMenu(root, theme_label, *[style for style in plt.style.available])
 graphs.place(x=720, y=10)
+
+def read_file(filename: str):
+    if filename.endswith(".xlsx"):
+        return read_excel(filename)
+    else:
+        return read_csv(filename)
+
+def createGraph():
+    plt.clf()
+    if graph_label.get() == "Bar Graph":
+        for datapoint in dataset:
+            file = read_file(datapoint.data_file)
+            plt.bar(file[datapoint.column1], file[datapoint.column2], label=datapoint.label)
+            plt.xlabel(datapoint.column1.title())
+            plt.ylabel(datapoint.column2.title())
+            plt.title("Data Plotter - Bar Graph")
+    elif graph_label.get() == "Line Graph":
+        for datapoint in dataset:
+            file = read_file(datapoint.data_file)
+            plt.plot(file[datapoint.column1], file[datapoint.column2], label=datapoint.label)
+            plt.xlabel(datapoint.column1.title())
+            plt.ylabel(datapoint.column2.title())
+            plt.title("Data Plotter - Line Graph")
+    elif graph_label.get() == "Horizontal Bar Graph":
+        file = read_file(dataset[0].data_file)
+        plt.barh(file[dataset[0].column2], file[dataset[0].column1], label=dataset[0].label)
+        plt.xlabel(dataset[0].column2.title())
+        plt.ylabel(dataset[0].column1.title())
+        plt.title("Data Plotter - Horizontal Bar Graph")
+    elif graph_label.get() == "Pie Chart":
+        file = read_file(dataset[0].data_file)
+        plt.pie(file[dataset[0].column1], labels=file[dataset[0].column2])
+        plt.title("Data Plotter - Pie Chart")
+    elif graph_label.get() == "Scatter Plot":
+        for datapoint in dataset:
+            file = read_file(datapoint.data_file)
+            plt.bar(file[datapoint.column1], file[datapoint.column2], label=datapoint.label)
+            plt.xlabel(datapoint.column1.title())
+            plt.ylabel(datapoint.column2.title())
+            plt.title("Data Plotter - Scatter Plot")
+    elif graph_label.get() == "Area Chart":
+        for datapoint in dataset:
+            file = read_file(datapoint.data_file)
+            plt.stackplot(file[datapoint.column1], file[datapoint.column2], labels=[datapoint.label])
+            plt.title("Data Plotter - Area Chart")
+            plt.xlabel(datapoint.column1.title())
+            plt.ylabel(datapoint.column2.title())
+            plt.legend(loc='upper left')
+    else:
+        raise Exception("GraphValue not recognized")
+
 
 def getColumnData() -> bool:
     global column1
