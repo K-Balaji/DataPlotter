@@ -14,12 +14,12 @@ root.minsize(900, 550)
 root.state('zoomed')
 
 class DataPoint:
-    def __init__(self, label: str = "", column1: str = "", column2: str = "", data_file: str = "", basename_title: str = data_file.replace(".csv", "").replace(".xlsx", "")):
+    def __init__(self, label: str = "", column1: str = "", column2: str = "", data_file: str = ""):
         self.label = label
         self.column1 = column1
         self.column2 = column2
         self.data_file = data_file
-        self.basename_title = basename_title
+        self.basename_title = data_file.replace(".csv", "").replace(".xlsx", "")
     
     def setFile(self, file: str):
         self.data_file = file
@@ -111,7 +111,7 @@ def createGraph():
     elif graph_label.get() == "Scatter Plot":
         for datapoint in dataset:
             file = read_file(datapoint.data_file)
-            plt.bar(file[datapoint.column1], file[datapoint.column2], label=datapoint.label)
+            plt.scatter(file[datapoint.column1], file[datapoint.column2], label=datapoint.label)
             plt.xlabel(datapoint.column1.title())
             plt.ylabel(datapoint.column2.title())
             plt.title("Data Plotter - Scatter Plot")
@@ -151,8 +151,11 @@ def plotGraph():
     if not getColumnData():
         return
 
-    createGraph()
-    plt.show()
+    if graph_label.get() == "Select Graph":
+        showinfo("Data Plotter", "Select type of graph")
+    else:
+        createGraph()
+        plt.show()
 
     '''
     if graph_label.get() == "Select Graph":
@@ -245,7 +248,6 @@ def openFile():
     text3.config(text=f"File :          {basename(file)}")
     preview.delete(1.0, END)
     preview.insert(1.0, data_file)
-    basename_title = basename(file).replace(".csv", "").replace(".xlsx", "")
 
 
 # Buttons
