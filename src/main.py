@@ -17,6 +17,9 @@ root.state('zoomed')
 plots_frame = Frame(root)
 plots_frame.place(x=130, y=240)
 
+# Table Array
+table_array: list[list[Entry]] = []
+
 class DataPoint:
     def __init__(self, label: str = "", column1: str = "", column2: str = "", data_file: str = ""):
         self.label = label
@@ -28,15 +31,6 @@ class DataPoint:
     def setFile(self, file: str):
         self.data_file = file
         self.basename_title = basename(data_file).replace(".csv", "").replace(".xlsx", "")
-        try:
-            file = read_file(self.data_file)
-            if len(file) > 2500:
-                showinfo("Data Plotter", "Number of rows greater than 2500. Please reduce the number of rows to avoid"
-                             "performance issues")
-                return
-        except:
-            showinfo("Data Plotter", "Error Parsing File")
-            return
     
     def setCol1(self, col1: str):
         self.column1 = col1
@@ -48,6 +42,8 @@ class DataPoint:
         self.label = label
     
     def getFile(self):
+        data_table.update_from_table()
+
         file = askopenfilename(filetypes=[("CSV Files", "*.csv"), ("Excel Sheets", "*.xlsx")])
         if file == "":
             return
@@ -65,30 +61,50 @@ class DataPoint:
                 return
             preview.delete(1.0, END)
             preview.insert(1.0, read_file(self.data_file))
+        
+        data_table.update_from_dataset()
+                
 
 # Data Set
 dataset: list[DataPoint] = [DataPoint("GDP", "year", "income", "C:\\Users\\balajik\\Documents\\Python_Codes\\canada_per_capita_income.csv"),DataPoint("GDP", "year", "income", "C:\\Users\\balajik\\Documents\\Python_Codes\\canada_per_capita_income.csv"),DataPoint("GDP", "year", "income", "C:\\Users\\balajik\\Documents\\Python_Codes\\canada_per_capita_income.csv"),DataPoint("GDP", "year", "income", "C:\\Users\\balajik\\Documents\\Python_Codes\\canada_per_capita_income.csv"),DataPoint("GDP", "year", "income", "C:\\Users\\balajik\\Documents\\Python_Codes\\canada_per_capita_income.csv"),DataPoint("GDP", "year", "income", "C:\\Users\\balajik\\Documents\\Python_Codes\\canada_per_capita_income.csv"),DataPoint("GDP", "year", "income", "C:\\Users\\balajik\\Documents\\Python_Codes\\canada_per_capita_income.csv"),DataPoint("GDP", "year", "income", "C:\\Users\\balajik\\Documents\\Python_Codes\\canada_per_capita_income.csv"),DataPoint("GDP", "year", "income", "C:\\Users\\balajik\\Documents\\Python_Codes\\canada_per_capita_income.csv"),DataPoint("GDP", "year", "income", "C:\\Users\\balajik\\Documents\\Python_Codes\\canada_per_capita_income.csv"),DataPoint("GDP", "year", "income", "C:\\Users\\balajik\\Documents\\Python_Codes\\canada_per_capita_income.csv")]
 
 class Table:
-    def __init__(self):
+    def update_from_dataset(self):
+        table_array.clear()
         for i in range(len(dataset)):
+            table_array.append([])
             for j in range(5):
                 if j != 4:
                     entry = Entry(plots_frame, width=12, font=("Arial", "16"))
                     entry.grid(row=i, column=j)
                     if j == 0:
-                        entry.insert(END, dataset[0].label)
+                        entry.insert(END, dataset[i].label)
                     elif j == 1:
-                        entry.insert(END, dataset[0].column1)
+                        entry.insert(END, dataset[i].column1)
                     elif j == 2:
-                        entry.insert(END, dataset[0].column2)
+                        entry.insert(END, dataset[i].column2)
                     else:
-                        entry.insert(END, dataset[0].data_file)
+                        entry.insert(END, dataset[i].data_file)
+                    
+                    table_array[i].append(entry)
                 else:
                     button = Button(plots_frame, text="Open File", relief="groove", activebackground="black", activeforeground="white", command=dataset[i].getFile, borderwidth=4)
                     button.grid(row=i, column=j)
+    
+    def update_from_table(self):
+        for i in range(len(table_array)):
+            for j in range(4):
+                if j == 0:
+                    dataset[i].setLabel(table_array[i][j].get())
+                elif j == 1:
+                    dataset[i].setCol1(table_array[i][j].get())
+                elif j == 2:
+                    dataset[i].setCol2(table_array[i][j].get())
+                else:
+                    dataset[i].setFile(table_array[i][j].get())
 
-Table()
+data_table = Table()
+data_table.update_from_dataset()
 
 # Files/Data
 file = ""
@@ -136,52 +152,93 @@ def read_file(filename: str):
     else:
         return read_csv(filename)
 
-def createGraph():
+def createGraph() -> bool:
     plt.clf()
     if graph_label.get() == "Bar Graph":
         for datapoint in dataset:
+            if datapoint.data_file == "":
+                showinfo("Data Plotter", "Please select a data file")
+                return False
             file = read_file(datapoint.data_file)
-            plt.bar(file[datapoint.column1], file[datapoint.column2], label=datapoint.label)
+            try:
+                plt.bar(file[datapoint.column1], file[datapoint.column2], label=datapoint.label)
+            except:
+                showinfo("Data Plotter", "One or more columns didn't exist")
             plt.xlabel(datapoint.column1.title())
             plt.ylabel(datapoint.column2.title())
             plt.title("Data Plotter - Bar Graph")
         plt.legend()
     elif graph_label.get() == "Line Graph":
         for datapoint in dataset:
+            if datapoint.data_file == "":
+                showinfo("Data Plotter", "Please select a data file")
+                return False
             file = read_file(datapoint.data_file)
+            try:
+                plt.plot(file[datapoint.column1], file[datapoint.column2], label=datapoint.label)
+            except:
+                showinfo("Data Plotter", "One or more columns didn't exist")
             plt.plot(file[datapoint.column1], file[datapoint.column2], label=datapoint.label)
             plt.xlabel(datapoint.column1.title())
             plt.ylabel(datapoint.column2.title())
             plt.title("Data Plotter - Line Graph")
         plt.legend()
     elif graph_label.get() == "Horizontal Bar Graph":
+        if dataset[0].data_file == "":
+            showinfo("Data Plotter", "Please select a data file")
+            return False
         file = read_file(dataset[0].data_file)
+        try:
+            plt.barh(file[dataset[0].column2], file[dataset[0].column1], label=dataset[0].label)
+        except:
+            showinfo("Data Plotter", "One or more columns didn't exist")
         plt.barh(file[dataset[0].column2], file[dataset[0].column1], label=dataset[0].label)
         plt.xlabel(dataset[0].column2.title())
         plt.ylabel(dataset[0].column1.title())
         plt.title("Data Plotter - Horizontal Bar Graph")
     elif graph_label.get() == "Pie Chart":
+        if dataset[0].data_file == "":
+            showinfo("Data Plotter", "Please select a data file")
+            return False
         file = read_file(dataset[0].data_file)
+        try:
+            plt.pie(file[dataset[0].column1], labels=file[dataset[0].column2])
+        except:
+            showinfo("Data Plotter", "One or more columns didn't exist")
         plt.pie(file[dataset[0].column1], labels=file[dataset[0].column2])
         plt.title("Data Plotter - Pie Chart")
     elif graph_label.get() == "Scatter Plot":
         for datapoint in dataset:
+            if datapoint.data_file == "":
+                showinfo("Data Plotter", "Please select a data file")
+                return False
             file = read_file(datapoint.data_file)
-            plt.scatter(file[datapoint.column1], file[datapoint.column2], label=datapoint.label)
+            try:
+                plt.scatter(file[datapoint.column1], file[datapoint.column2], label=datapoint.label)
+            except:
+                showinfo("Data Plotter", "One or more columns didn't exist")
             plt.xlabel(datapoint.column1.title())
             plt.ylabel(datapoint.column2.title())
             plt.title("Data Plotter - Scatter Plot")
             plt.legend()
     elif graph_label.get() == "Area Chart":
         for datapoint in dataset:
+            if datapoint.data_file == "":
+                showinfo("Data Plotter", "Please select a data file")
+                return False
             file = read_file(datapoint.data_file)
-            plt.stackplot(file[datapoint.column1], file[datapoint.column2], labels=[datapoint.label])
+            try:
+                plt.stackplot(file[datapoint.column1], file[datapoint.column2], labels=[datapoint.label])
+            except:
+                showinfo("Data Plotter", "One or more columns didn't exist")
             plt.title("Data Plotter - Area Chart")
             plt.xlabel(datapoint.column1.title())
             plt.ylabel(datapoint.column2.title())
             plt.legend(loc='upper left')
     else:
         raise Exception("GraphValue not recognized")
+    
+    return True
 
 '''
 def getColumnData() -> bool:
@@ -212,8 +269,8 @@ def plotGraph():
     if graph_label.get() == "Select Graph":
         showinfo("Data Plotter", "Select type of graph")
     else:
-        createGraph()
-        plt.show()
+        if createGraph():
+            plt.show()
 
     '''
     if graph_label.get() == "Select Graph":
@@ -298,10 +355,25 @@ def openFile():
     preview.delete(1.0, END)
     preview.insert(1.0, data_file)
 
+def addRow():
+    dataset.append(DataPoint())
+    data_table.update_from_table()
+    data_table.update_from_dataset()
+
+def removeRow():
+    dataset.clear()
+    data_table.update_from_table()
+    data_table.update_from_dataset()
 
 # Buttons
+arrowButton = Button(root, text="+", relief="groove", activebackground="black", activeforeground="white", font=("Arial", '14'), command=addRow)
+arrowButton.place(x=400, y=580)
+
+minusButton = Button(root, text="-", relief="groove", activebackground="black", activeforeground="white", font=("Arial", '14'), command=removeRow)
+minusButton.place(x=460, y=580)
+
 plotButton = Button(root, text="Plot", relief="groove", activebackground="black", activeforeground="white",
                     font=('Arial', '16'), command=plotGraph)
-plotButton.place(x=430, y=620)
+plotButton.place(x=410, y=640)
 
 root.mainloop()
