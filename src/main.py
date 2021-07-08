@@ -70,7 +70,11 @@ dataset: list[DataPoint] = [DataPoint("GDP", "year", "income", "C:\\Users\\balaj
 
 class Table:
     def update_from_dataset(self):
+        global plots_frame
         table_array.clear()
+        plots_frame.destroy()
+        plots_frame = Frame(root)
+        plots_frame.place(x=130, y=240)
         for i in range(len(dataset)):
             table_array.append([])
             for j in range(5):
@@ -240,20 +244,6 @@ def createGraph() -> bool:
     
     return True
 
-'''
-def getColumnData() -> bool:
-    global column1
-    global column2
-
-    try:
-        column1 = list(data_file[str(column1Text.get())])
-        column2 = list(data_file[str(column2Text.get())])
-        return True
-    except:
-        showinfo("Data Plotter", "One or both columns doesn't exist")
-        return False
-'''
-
 def graphWindow():
     plt.get_current_fig_manager().window.wm_iconbitmap("./icon.ico")
     plt.get_current_fig_manager().set_window_title(f"Data Plotter {graph_label.get()} - {basename_title}")
@@ -263,76 +253,12 @@ def graphWindow():
         plt.style.use(theme_label.get())
 
 def plotGraph():
-    # if not getColumnData():
-    #     return
-
     if graph_label.get() == "Select Graph":
         showinfo("Data Plotter", "Select type of graph")
     else:
         if createGraph():
+            graphWindow()
             plt.show()
-
-    '''
-    if graph_label.get() == "Select Graph":
-        showinfo("Data Plotter", "Please select type of graph")
-        return
-
-    elif graph_label.get() == "Line Graph":
-        graphWindow()
-        plt.plot(column1, column2, label=labelText.get())
-        plt.xlim([min(column1), max(column1)])
-        plt.ylim([min(column2), max(column2)])
-        plt.title(f"Line Graph - {basename_title}")
-        plt.xlabel(str(column1Text.get()).title())
-        plt.ylabel(str(column2Text.get()).title())
-        plt.legend()
-        plt.show()
-
-    elif graph_label.get() == "Bar Graph":
-        graphWindow()
-        plt.bar(column1, column2, label=labelText.get())
-        plt.title(f"Bar Graph - {basename_title}")
-        plt.xlabel(str(column1Text.get()).title())
-        plt.ylabel(str(column2Text.get()).title())
-        plt.legend()
-        plt.show()
-
-    elif graph_label.get() == "Horizontal Bar Graph":
-        graphWindow()
-        plt.barh(column2, column1)
-        plt.title(f"Horizontal Bar Graph - {basename_title}")
-        plt.xlabel(str(column1Text.get()).title())
-        plt.ylabel(str(column2Text.get()).title())
-        plt.show()
-
-    elif graph_label.get() == "Pie Chart":
-        graphWindow()
-        plt.pie(column1, labels=column2)
-        plt.title(f"Pie Chart - {basename_title}")
-        plt.show()
-    
-    elif graph_label.get() == "Scatter Plot":
-        graphWindow()
-        plt.scatter(column1, column2, label=labelText.get())
-        plt.title(f"Scatter Plot - {basename_title}")
-        plt.xlabel(str(column1Text.get()).title())
-        plt.ylabel(str(column2Text.get()).title())
-        plt.legend()
-        plt.show()
-
-    elif graph_label.get() == "Area Chart":
-        graphWindow()
-        plt.stackplot(column1, column2, labels=[labelText.get()])
-        plt.title(f"Area Chart - {basename_title}")
-        plt.xlabel(str(column1Text.get()).title())
-        plt.ylabel(str(column2Text.get()).title())
-        plt.legend(loc='upper left')
-        plt.show()
-
-    else:
-        raise Exception("Graph Value not recognized")
-    '''
-
 
 def openFile():
     global file
@@ -356,13 +282,15 @@ def openFile():
     preview.insert(1.0, data_file)
 
 def addRow():
-    dataset.append(DataPoint())
     data_table.update_from_table()
+    dataset.append(DataPoint())
     data_table.update_from_dataset()
 
 def removeRow():
-    dataset.clear()
+    global dataset
+
     data_table.update_from_table()
+    dataset = dataset[:-1]
     data_table.update_from_dataset()
 
 # Buttons
