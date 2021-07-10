@@ -15,7 +15,7 @@ root.state('zoomed')
 
 # Frame
 plots_frame = Frame(root)
-plots_frame.place(x=130, y=240)
+plots_frame.place(x=30, y=240)
 
 # Table Array
 table_array: list[list[Entry]] = []
@@ -44,7 +44,7 @@ class DataPoint:
     def getFile(self):
         data_table.update_from_table()
 
-        file = askopenfilename(filetypes=[("CSV Files", "*.csv"), ("Excel Sheets", "*.xlsx")])
+        file = askopenfilename(filetypes=[("CSV Files", "*.csv"), ("Excel Files", "*.xlsx")])
         if file == "":
             return
         else:
@@ -74,12 +74,12 @@ class Table:
         table_array.clear()
         plots_frame.destroy()
         plots_frame = Frame(root)
-        plots_frame.place(x=130, y=240)
+        plots_frame.place(x=30, y=240)
         for i in range(len(dataset)):
             table_array.append([])
             for j in range(5):
                 if j != 4:
-                    entry = Entry(plots_frame, width=12, font=("Arial", "16"))
+                    entry = Entry(plots_frame, width=16, font=("Arial", "16"))
                     entry.grid(row=i, column=j)
                     if j == 0:
                         entry.insert(END, dataset[i].label)
@@ -117,13 +117,13 @@ preview.place(x=900, y=0)
 
 # Labels
 text1 = Label(root, text="Label", font=('Arial', '16'), bg='#070091', fg='white')
-text1.place(x=190, y=200)
+text1.place(x=100, y=200)
 text2 = Label(root, text="Column 1", font=('Arial', '16'), bg='#070091', fg='white')
-text2.place(x=310, y=200)
+text2.place(x=280, y=200)
 text3 = Label(root, text="Column 2", font=('Arial', '16'), bg='#070091', fg='white')
-text3.place(x=450, y=200)
+text3.place(x=470, y=200)
 text4 = Label(root, text="File Path", font=('Arial', '16'), bg='#070091', fg='white')
-text4.place(x=610, y=200)
+text4.place(x=680, y=200)
 
 # Dropdown Menu
 graph_label = StringVar(root, "Select Graph")
@@ -154,7 +154,6 @@ def createGraph() -> bool:
                 showinfo("Data Plotter", "One or more columns didn't exist")
             plt.xlabel(datapoint.column1.title())
             plt.ylabel(datapoint.column2.title())
-            plt.title("Data Plotter - Bar Graph")
         plt.legend()
     elif graph_label.get() == "Line Graph":
         for datapoint in dataset:
@@ -163,12 +162,11 @@ def createGraph() -> bool:
                 return False
             file = read_file(datapoint.data_file)
             try:
-                plt.plot(file[datapoint.column1], file[datapoint.column2], label=datapoint.label)
+                plt.plot(file[datapoint.column1], file[datapoint.column2],label=datapoint.label)
             except:
                 showinfo("Data Plotter", "One or more columns didn't exist")
             plt.xlabel(datapoint.column1.title())
             plt.ylabel(datapoint.column2.title())
-            plt.title("Data Plotter - Line Graph")
         plt.legend()
     elif graph_label.get() == "Horizontal Bar Graph":
         if dataset[0].data_file == "":
@@ -181,7 +179,7 @@ def createGraph() -> bool:
             showinfo("Data Plotter", "One or more columns didn't exist")
         plt.xlabel(dataset[0].column2.title())
         plt.ylabel(dataset[0].column1.title())
-        plt.title("Data Plotter - Horizontal Bar Graph")
+        showinfo("Data Plotter", "Horizontal Bar Graph takes only the first set of data given")
     elif graph_label.get() == "Pie Chart":
         if dataset[0].data_file == "":
             showinfo("Data Plotter", "Please select a data file")
@@ -191,7 +189,7 @@ def createGraph() -> bool:
             plt.pie(file[dataset[0].column1], labels=file[dataset[0].column2])
         except:
             showinfo("Data Plotter", "One or more columns didn't exist")
-        plt.title("Data Plotter - Pie Chart")
+        showinfo("Data Plotter", "Pie Chart takes only the first set of data given")
     elif graph_label.get() == "Scatter Plot":
         for datapoint in dataset:
             if datapoint.data_file == "":
@@ -204,7 +202,6 @@ def createGraph() -> bool:
                 showinfo("Data Plotter", "One or more columns didn't exist")
             plt.xlabel(datapoint.column1.title())
             plt.ylabel(datapoint.column2.title())
-            plt.title("Data Plotter - Scatter Plot")
             plt.legend()
     elif graph_label.get() == "Area Chart":
         for datapoint in dataset:
@@ -216,7 +213,6 @@ def createGraph() -> bool:
                 plt.stackplot(file[datapoint.column1], file[datapoint.column2], labels=[datapoint.label])
             except:
                 showinfo("Data Plotter", "One or more columns didn't exist")
-            plt.title("Data Plotter - Area Chart")
             plt.xlabel(datapoint.column1.title())
             plt.ylabel(datapoint.column2.title())
             plt.legend(loc='upper left')
@@ -227,7 +223,8 @@ def createGraph() -> bool:
 
 def graphWindow():
     plt.get_current_fig_manager().window.wm_iconbitmap("./icon.ico")
-    plt.get_current_fig_manager().set_window_title(f"Data Plotter {graph_label.get()}")
+    plt.get_current_fig_manager().set_window_title(f"Data Plotter - {graph_label.get()}")
+    plt.title(f"Data Plotter - {graph_label.get()}")
     if theme_label.get() == "Graph Theme":
         plt.style.use('bmh')
     else:
@@ -244,6 +241,9 @@ def plotGraph():
 
 def addRow():
     data_table.update_from_table()
+    if len(dataset) >= 10:
+        showinfo("Data Plotter", "Can't add more than 10 plots")
+        return
     dataset.append(DataPoint())
     data_table.update_from_dataset()
 
