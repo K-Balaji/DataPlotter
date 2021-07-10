@@ -10,7 +10,7 @@ root = Tk()
 root.configure(background='#070091')
 root.title("Data Plotter")
 root.iconbitmap("./icon.ico")
-root.minsize(900, 550)
+root.minsize(900, 720)
 root.state('zoomed')
 
 # Frame
@@ -128,7 +128,7 @@ text4.place(x=680, y=200)
 # Dropdown Menu
 graph_label = StringVar(root, "Select Graph")
 graphs = OptionMenu(root, graph_label, *["Line Graph", "Bar Graph", "Horizontal Bar Graph", "Pie Chart", "Scatter Plot", "Area Chart"])
-graphs.place(x=400, y=140)
+graphs.place(x=400, y=125)
 
 theme_label = StringVar(root, "Graph Theme")
 graphs = OptionMenu(root, theme_label, *[style for style in plt.style.available])
@@ -152,6 +152,7 @@ def createGraph() -> bool:
                 plt.bar(file[datapoint.column1], file[datapoint.column2], label=datapoint.label)
             except:
                 showinfo("Data Plotter", "One or more columns didn't exist")
+                return
             plt.xlabel(datapoint.column1.title())
             plt.ylabel(datapoint.column2.title())
         plt.legend()
@@ -165,10 +166,12 @@ def createGraph() -> bool:
                 plt.plot(file[datapoint.column1], file[datapoint.column2],label=datapoint.label)
             except:
                 showinfo("Data Plotter", "One or more columns didn't exist")
+                return
             plt.xlabel(datapoint.column1.title())
             plt.ylabel(datapoint.column2.title())
         plt.legend()
     elif graph_label.get() == "Horizontal Bar Graph":
+        showinfo("Data Plotter", "Horizontal Bar Graph takes only the first set of data given")
         if dataset[0].data_file == "":
             showinfo("Data Plotter", "Please select a data file")
             return False
@@ -177,10 +180,11 @@ def createGraph() -> bool:
             plt.barh(file[dataset[0].column2], file[dataset[0].column1], label=dataset[0].label)
         except:
             showinfo("Data Plotter", "One or more columns didn't exist")
+            return
         plt.xlabel(dataset[0].column2.title())
         plt.ylabel(dataset[0].column1.title())
-        showinfo("Data Plotter", "Horizontal Bar Graph takes only the first set of data given")
     elif graph_label.get() == "Pie Chart":
+        showinfo("Data Plotter", "Pie Chart takes only the first set of data given")
         if dataset[0].data_file == "":
             showinfo("Data Plotter", "Please select a data file")
             return False
@@ -189,7 +193,7 @@ def createGraph() -> bool:
             plt.pie(file[dataset[0].column1], labels=file[dataset[0].column2])
         except:
             showinfo("Data Plotter", "One or more columns didn't exist")
-        showinfo("Data Plotter", "Pie Chart takes only the first set of data given")
+            return
     elif graph_label.get() == "Scatter Plot":
         for datapoint in dataset:
             if datapoint.data_file == "":
@@ -213,6 +217,7 @@ def createGraph() -> bool:
                 plt.stackplot(file[datapoint.column1], file[datapoint.column2], labels=[datapoint.label])
             except:
                 showinfo("Data Plotter", "One or more columns didn't exist")
+                return
             plt.xlabel(datapoint.column1.title())
             plt.ylabel(datapoint.column2.title())
             plt.legend(loc='upper left')
