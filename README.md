@@ -40,6 +40,9 @@ python data_plotter.py
 
 To contribute to this project, make a pull request.
 
+## Credits
+Icon created by [Freepik](https://www.freepik.com/)
+
 ## License
 
 [MIT License](./LICENSE)
