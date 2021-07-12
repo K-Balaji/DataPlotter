@@ -12,12 +12,12 @@ Data Plotter is an open source app for plotting data from CSV Files. It is licen
 ![Screenshot 2](./images/Screenshot_2.png)
 
 ## Downloads
-Windows 64-bit and 32-bit - [Download](https://github.com/K-Balaji/DataPlotter/releases/download/3.0.0/Data_Plotter_Setup.exe)
+Windows 10 64-bit - [Download](https://github.com/K-Balaji/DataPlotter/releases/download/4.0.0/Data_Plotter_Setup.exe)
 
 ## Test Locally (For Windows, MacOS, Linux)
 
 1. Install <a href="https://www.python.org/" target="_blank">Python</a>.
-2. Download this [ZIP Folder](https://github.com/K-Balaji/DataPlotter/archive/refs/tags/3.0.0.zip) or this [tar.gz File](https://github.com/K-Balaji/DataPlotter/archive/refs/tags/3.0.0.tar.gz).
+2. Download this [ZIP Folder](https://github.com/K-Balaji/DataPlotter/archive/refs/tags/4.0.0.zip) or this [tar.gz File](https://github.com/K-Balaji/DataPlotter/archive/refs/tags/4.0.0.tar.gz).
 3. Extract it to a directory of your choice.
 4. Open your terminal and navigate to that directory.
 5. Enter the following in the terminal - 
