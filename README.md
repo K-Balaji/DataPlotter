@@ -4,7 +4,7 @@
 </div>
 
 ## About
-Data Plotter is an open source app for plotting data from CSV Files. It is licensed under the MIT License.
+Data Plotter is an open source app for plotting data from data files. It is licensed under the MIT License.
 
 ## Screenshots
 
@@ -33,15 +33,12 @@ python data_plotter.py
 - <a href="https://docs.python.org/3/library/tkinter.html" target="_blank">Tkinter</a>
 - <a href="https://pandas.pydata.org/" target="_blank">Pandas</a>
 
-## Future Plans
-- Multiple plots on the same graph
-
 ## Contributing
 
 To contribute to this project, make a pull request.
 
 ## Credits
-Icon created by [Freepik](https://www.freepik.com/)
+Icon by [Freepik](https://www.freepik.com/)
 
 ## License
 
