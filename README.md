@@ -24,7 +24,7 @@ Windows 10 64-bit - [Download](https://github.com/K-Balaji/DataPlotter/releases/
 ```
 pip install -r requirements.txt
 cd src
-python data_plotter.py
+python main.py
 ```
 
 ## Technologies used
