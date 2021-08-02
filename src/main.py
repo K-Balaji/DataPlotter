@@ -13,6 +13,8 @@ root.iconbitmap("./icon.ico")
 root.minsize(900, 720)
 root.state('zoomed')
 
+theme = "dark"
+
 # Frame
 plots_frame = Frame(root)
 plots_frame.place(x=30, y=240)
@@ -79,7 +81,10 @@ class Table:
             table_array.append([])
             for j in range(5):
                 if j != 4:
-                    entry = Entry(plots_frame, width=16, font=("Arial", "16"))
+                    if theme == "dark":
+                        entry = Entry(plots_frame, width=16, font=("Arial", "16"), foreground="white", background="black")
+                    else:
+                        entry = Entry(plots_frame, width=16, font=("Arial", "16"), foreground="black", background="white")
                     entry.grid(row=i, column=j)
                     if j == 0:
                         entry.insert(END, dataset[i].label)
@@ -92,7 +97,10 @@ class Table:
                     
                     table_array[i].append(entry)
                 else:
-                    button = Button(plots_frame, text="Open File", relief="groove", activebackground="black", activeforeground="white", command=dataset[i].getFile, borderwidth=4)
+                    if theme == "dark":
+                        button = Button(plots_frame, text="Open File", relief="groove", activebackground="gray", activeforeground="white", foreground="white", background="black", command=dataset[i].getFile, borderwidth=4)
+                    else:
+                        button = Button(plots_frame, text="Open File", relief="groove", activebackground="gray", activeforeground="black", foreground="black", background="white", command=dataset[i].getFile, borderwidth=4)
                     button.grid(row=i, column=j)
     
     def update_from_table(self):
@@ -129,10 +137,18 @@ text4.place(x=680, y=200)
 graph_label = StringVar(root, "Select Graph")
 graphs = OptionMenu(root, graph_label, *["Line Graph", "Bar Graph", "Horizontal Bar Graph", "Pie Chart", "Scatter Plot", "Area Chart"])
 graphs.place(x=400, y=125)
+graphs.config(bg="BLACK", fg="WHITE")
+graphs.config(activebackground="BLACK", activeforeground="WHITE")
+graphs["menu"].config(bg="BLACK", fg="WHITE")
+graphs["highlightthickness"] = 0
 
 theme_label = StringVar(root, "Graph Theme")
-graphs = OptionMenu(root, theme_label, *[style for style in plt.style.available])
-graphs.place(x=720, y=30)
+themes = OptionMenu(root, theme_label, *[style for style in plt.style.available])
+themes.place(x=720, y=30)
+themes.config(bg="BLACK", fg="WHITE")
+themes.config(activebackground="BLACK", activeforeground="WHITE")
+themes["menu"].config(bg="BLACK", fg="WHITE")
+themes["highlightthickness"] = 0
 
 def read_file(filename: str):
     if filename.endswith(".xlsx"):
@@ -171,7 +187,8 @@ def createGraph() -> bool:
             plt.ylabel(datapoint.column2.title())
         plt.legend()
     elif graph_label.get() == "Horizontal Bar Graph":
-        showinfo("Data Plotter", "Horizontal Bar Graph takes only the first set of data given")
+        if len(table_array) > 1:
+            showinfo("Data Plotter", "Horizontal Bar Graph takes only the first set of data given")
         if dataset[0].data_file == "":
             showinfo("Data Plotter", "Please select a data file")
             return False
@@ -184,7 +201,8 @@ def createGraph() -> bool:
         plt.xlabel(dataset[0].column2.title())
         plt.ylabel(dataset[0].column1.title())
     elif graph_label.get() == "Pie Chart":
-        showinfo("Data Plotter", "Pie Chart takes only the first set of data given")
+        if len(table_array) > 1:
+            showinfo("Data Plotter", "Pie Chart takes only the first set of data given")
         if dataset[0].data_file == "":
             showinfo("Data Plotter", "Please select a data file")
             return False
@@ -252,6 +270,71 @@ def addRow():
     dataset.append(DataPoint())
     data_table.update_from_dataset()
 
+def changeTheme():
+    global theme
+    global data_table
+
+    theme = "dark" if theme == "light" else "light"
+    data_table.update_from_table()
+    data_table.update_from_dataset()
+    if theme == "light":
+        graphs.config(bg="WHITE", fg="BLACK")
+        graphs.config(activebackground="WHITE", activeforeground="BLACK")
+        graphs["menu"].config(bg="WHITE", fg="BLACK")
+
+        themes.config(bg="WHITE", fg="BLACK")
+        themes.config(activebackground="WHITE", activeforeground="BLACK")
+        themes["menu"].config(bg="WHITE", fg="BLACK")
+        
+        arrowButton.config(activebackground="GRAY", activeforeground="BLACK")
+        arrowButton.config(background="WHITE", foreground="BLACK")
+
+        plotButton.config(activebackground="GRAY", activeforeground="BLACK")
+        plotButton.config(background="WHITE", foreground="BLACK")
+
+        minusButton.config(activebackground="GRAY", activeforeground="BLACK")
+        minusButton.config(background="WHITE", foreground="BLACK")
+
+        themeButton.config(activebackground="GRAY", activeforeground="BLACK")
+        themeButton.config(background="WHITE", foreground="BLACK")
+
+        root.configure(background='#2185ff')
+
+        text1.config(background="#2185ff", foreground="black")
+        text2.config(background="#2185ff", foreground="black")
+        text3.config(background="#2185ff", foreground="black")
+        text4.config(background="#2185ff", foreground="black")
+
+        preview.config(background="#ff47ed", foreground="black")
+    else:
+        graphs.config(bg="BLACK", fg="WHITE")
+        graphs.config(activebackground="BLACK", activeforeground="WHITE")
+        graphs["menu"].config(bg="BLACK", fg="WHITE")
+
+        themes.config(bg="BLACK", fg="WHITE")
+        themes.config(activebackground="BLACK", activeforeground="WHITE")
+        themes["menu"].config(bg="BLACK", fg="WHITE")
+
+        arrowButton.config(activebackground="GRAY", activeforeground="WHITE")
+        arrowButton.config(background="BLACK", foreground="WHITE")
+
+        plotButton.config(activebackground="GRAY", activeforeground="WHITE")
+        plotButton.config(background="BLACK", foreground="WHITE")
+
+        minusButton.config(activebackground="GRAY", activeforeground="WHITE")
+        minusButton.config(background="BLACK", foreground="WHITE")
+        
+        themeButton.config(activebackground="GRAY", activeforeground="WHITE")
+        themeButton.config(background="BLACK", foreground="WHITE")
+
+        root.configure(background='#070091')
+        text1.config(background="#070091", foreground="white")
+        text2.config(background="#070091", foreground="white")
+        text3.config(background="#070091", foreground="white")
+        text4.config(background="#070091", foreground="white")        
+
+        preview.config(background="#8c03fc", foreground="white")
+
 def removeRow():
     global dataset
 
@@ -260,14 +343,16 @@ def removeRow():
     data_table.update_from_dataset()
 
 # Buttons
-arrowButton = Button(root, text="+", relief="groove", activebackground="black", activeforeground="white", font=("Arial", '14'), command=addRow)
+arrowButton = Button(root, text="+", relief="groove", activebackground="gray", activeforeground="white", background="black", foreground="white", font=("Arial", '14'), command=addRow)
 arrowButton.place(x=395, y=580)
 
-minusButton = Button(root, text="-", relief="groove", activebackground="black", activeforeground="white", font=("Arial", '14'), command=removeRow)
+minusButton = Button(root, text="-", relief="groove", activebackground="gray", activeforeground="white", background="black", foreground="white", font=("Arial", '14'), command=removeRow)
 minusButton.place(x=455, y=580)
 
-plotButton = Button(root, text="Plot", relief="groove", activebackground="black", activeforeground="white",
-                    font=('Arial', '16'), command=plotGraph)
+plotButton = Button(root, text="Plot", relief="groove", activebackground="gray", activeforeground="white", background="black", foreground="white", font=('Arial', '16'), command=plotGraph)
 plotButton.place(x=410, y=640)
+
+themeButton = Button(root, text="Switch Theme", relief="groove", activebackground="gray", activeforeground="white", background="black", foreground="white", command=changeTheme)
+themeButton.place(x=30, y=30)
 
 root.mainloop()
