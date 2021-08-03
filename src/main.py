@@ -125,13 +125,13 @@ preview.place(x=900, y=0)
 
 # Labels
 text1 = Label(root, text="Label", font=('Arial', '16'), bg='#070091', fg='white')
-text1.place(x=100, y=200)
+text1.place(x=100, y=180)
 text2 = Label(root, text="Primary/Column 1", font=('Arial', '16'), bg='#070091', fg='white')
-text2.place(x=240, y=200)
+text2.place(x=240, y=180)
 text3 = Label(root, text="Secondary/Column 2", font=('Arial', '16'), bg='#070091', fg='white')
-text3.place(x=420, y=200)
+text3.place(x=420, y=180)
 text4 = Label(root, text="File Path", font=('Arial', '16'), bg='#070091', fg='white')
-text4.place(x=680, y=200)
+text4.place(x=680, y=180)
 
 # Dropdown Menu
 graph_label = StringVar(root, "Select Graph")
@@ -142,7 +142,7 @@ graphs.config(activebackground="BLACK", activeforeground="WHITE")
 graphs["menu"].config(bg="BLACK", fg="WHITE")
 graphs["highlightthickness"] = 0
 
-theme_label = StringVar(root, "Graph Theme")
+theme_label = StringVar(root, "Select Graph Theme")
 themes = OptionMenu(root, theme_label, *[style for style in plt.style.available])
 themes.place(x=720, y=30)
 themes.config(bg="BLACK", fg="WHITE")
@@ -248,7 +248,7 @@ def graphWindow():
     plt.get_current_fig_manager().window.wm_iconbitmap("./icon.ico")
     plt.get_current_fig_manager().set_window_title(f"Data Plotter - {graph_label.get()}")
     plt.title(f"Data Plotter - {graph_label.get()}")
-    if theme_label.get() == "Graph Theme":
+    if theme_label.get() == "Select Graph Theme":
         plt.style.use('bmh')
     else:
         plt.style.use(theme_label.get())
