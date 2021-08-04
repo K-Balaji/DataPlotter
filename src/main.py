@@ -65,7 +65,7 @@ class DataPoint:
             preview.insert(1.0, read_file(self.data_file))
         
         data_table.update_from_dataset()
-                
+
 
 # Data Set
 dataset: list[DataPoint] = []
@@ -73,6 +73,7 @@ dataset: list[DataPoint] = []
 class Table:
     def update_from_dataset(self):
         global plots_frame
+
         table_array.clear()
         plots_frame.destroy()
         plots_frame = Frame(root)
