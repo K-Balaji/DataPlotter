@@ -12,7 +12,7 @@ Data Plotter is an open source app for plotting graphs from data files.
 ![Screenshot 2](./images/Screenshot_2.png)
 
 ## Downloads
-Windows 10 64-bit - [Download](https://github.com/K-Balaji/DataPlotter/releases/download/5.0.0/Data_Plotter_Setup.exe)
+- Windows 10 64-bit Installer - [Download](https://github.com/K-Balaji/DataPlotter/releases/download/5.0.0/Data_Plotter_Setup.exe)
 
 ## Test Locally (For Windows, MacOS, Linux)
 
@@ -32,6 +32,7 @@ python main.py
 - <a href="https://matplotlib.org/" target="_blank">Matplotlib</a>
 - <a href="https://docs.python.org/3/library/tkinter.html" target="_blank">Tkinter</a>
 - <a href="https://pandas.pydata.org/" target="_blank">Pandas</a>
+- <a href="https://pypi.org/project/openpyxl" target="_blank">Openpyxl</a>
 
 ## Contributing
 
