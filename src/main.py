@@ -46,7 +46,7 @@ class DataPoint:
     def getFile(self):
         data_table.update_from_table()
 
-        file = askopenfilename(filetypes=[("CSV Files", "*.csv"), ("Excel Files", "*.xlsx")])
+        file = askopenfilename(filetypes=[("Excel Files", "*.xlsx"), ("CSV Files", "*.csv")])
         if file == "":
             return
         else:
